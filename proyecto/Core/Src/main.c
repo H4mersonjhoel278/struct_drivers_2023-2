@@ -24,6 +24,9 @@
 #include <stdio.h>
 
 #include "ring_buffer.h"
+
+#include "ssd1306.h"
+#include "ssd1306_fonts.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,9 +52,15 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 ring_buffer_t ring_buffer_uart_rx;
 uint8_t rx_buffer[16];
+
 uint8_t rx_data;
 
 uint16_t key_event = 0xFF;
+
+
+ring_buffer_t ring_buffer_keypad;
+uint8_t count = 0;
+uint16_t memory[5];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -320,19 +329,74 @@ int main(void)
   HAL_UART_Receive_IT(&huart2, &rx_data, 1);
 
   keypad_init(); // Initialize the keypad functionality
+
+  ssd1306_Init();
+  ssd1306_Fill(Black);
+  ssd1306_SetCursor(20, 20);
+  ssd1306_WriteString("<3", Font_7x10, White);
+  ssd1306_UpdateScreen();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (key_event != 0xFF) { // check if there is a event from the EXTi callback
+	  /*if (key_event != 0xFF) { // check if there is a event from the EXTi callback
 		  uint16_t key_pressed = keypad_handler(key_event); // call the keypad handler
 		  if (key_pressed != 0xFF) {
 			  printf("Key pressed: %x\r\n", key_pressed); // print the key pressed
 		  }
 		  key_event = 0xFF; // clean the event
-	  }
+		  }   */
+
+	  // se ingresa cada vez que se pulsa un tecla del taclado.
+	 	  if (key_event != 0xFF) { // check if there is a event from the EXTi callback
+	 	 		  uint16_t key_pressed = keypad_handler(key_event); // call the keypad handler
+	 	 		  if (key_pressed != 0xFF) {
+	 	 			  printf("Key pressed: %x\r\n", key_pressed); // print the key pressed
+
+	 	 			  // guarda los cuadtro digitos de la key y se presona '#' para finalizar la lectura y proceder con la verificacion.
+	 	 			  if (memory[4] != 0x0F){
+	 	 			  memory[count] = key_pressed;
+	 	 			  count = count + 1;}
+	 	 		  	  }
+
+	 	 		  	  // Validamos si la key corresponde con el año de nacimiento.
+	 	 		  	  // Se valida al preciconar la tecla # para completar las 5 teclas presionadas.
+	 	 		  	  if (memory[4] == 0x0F){
+	 	 		  		  // Pe varifica se los valores ingresados coinciden de ser correcto se imprime Pass en la pantalla.
+	 	 		  		  if (memory[0] == 0x02 && memory[1] == 0x00 && memory[2] == 0x00 && memory[3] == 0x03){
+	 	 		  			  ssd1306_Init();
+	 	 		  			  ssd1306_Fill(Black);
+	 	 		  			  ssd1306_SetCursor(20, 20);
+	 	 		  			  ssd1306_WriteString("Pass", Font_7x10, White);
+	 	 		  			  ssd1306_UpdateScreen();
+	 	 		  			  // caso contrario se imprime Fail en la pantalla.
+	 	 		  		  } else {
+	 	 		  			  ssd1306_Init();
+	 	 		  			  ssd1306_Fill(Black);
+	 	 		  			  ssd1306_SetCursor(20, 20);
+	 	 		  			  ssd1306_WriteString("Fail", Font_7x10, White);
+	 	 		  			  ssd1306_UpdateScreen();
+	 	 		  		  	  	  }
+	 	 		  	  	  }
+	 	 		  	  // Una vez ingresados los datos de y se a verificado si es correcta o no la key presione  '*' para ingresar nuevamente una key.
+	 	 		  	  if (key_pressed == 0x0E){
+	 	 		  		  for (uint8_t i = 0; i < 5 ; i++){
+	 	 		  			  memory[i]= 0;
+	 	 		  			  count = 0;
+	 	 		  		  }
+	 	 		  		  ssd1306_Init();
+	 	 		  		  ssd1306_Fill(Black);
+	 	 		  		  ssd1306_SetCursor(20, 20);
+	 	 		  		  ssd1306_WriteString("Ingrese key", Font_7x10, White);
+	 	 		  		  ssd1306_UpdateScreen();
+	 	 		  	  }
+	 	 		  key_event = 0xFF; // clean the event
+
+	 	  	  }
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -534,6 +598,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
