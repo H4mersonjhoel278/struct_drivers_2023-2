@@ -172,7 +172,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BRR = ROW_4_Pin;  // turn off row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_2_GPIO_Port->IDR & COLUMN_2_Pin) {
-			key_pressed = 0x02; // if column 1 is still high -> column 1 + row 1 = key 1
+			key_pressed = 0x02; // if column 2 is still high -> column 2 + row 1 = key 2
 			break;
 		}
 
@@ -180,7 +180,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_2_GPIO_Port->BSRR = ROW_2_Pin; 	// turn on row 2
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_2_GPIO_Port->IDR & COLUMN_2_Pin) {
-			key_pressed = 0x05; // if column 1 is still high -> column 1 + row 2 = key 4
+			key_pressed = 0x05; // if column 2 is still high -> column 2 + row 2 = key 5
 			break;
 		}
 
@@ -188,7 +188,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_3_GPIO_Port->BSRR = ROW_3_Pin; 	// turn on row 3
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_2_GPIO_Port->IDR & COLUMN_2_Pin) {
-			key_pressed = 0x08; // if column 1 is still high -> column 1 + row 3 = key 7
+			key_pressed = 0x08; // if column 2 is still high -> column 2 + row 3 = key 8
 			break;
 		}
 
@@ -196,7 +196,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BSRR = ROW_4_Pin; 	// turn on row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_2_GPIO_Port->IDR & COLUMN_2_Pin) {
-			key_pressed = 0x00; // if column 1 is still high -> column 1 + row 4 = key *
+			key_pressed = 0x00; // if column 2 is still high -> column 2 + row 4 = key 0
 			break;
 		}
 		break;
@@ -208,7 +208,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BRR = ROW_4_Pin;  // turn off row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_3_GPIO_Port->IDR & COLUMN_3_Pin) {
-			key_pressed = 0x03; // if column 1 is still high -> column 1 + row 1 = key 1
+			key_pressed = 0x03; // if column 3 is still high -> column 3 + row 1 = key 3
 			break;
 		}
 
@@ -216,7 +216,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_2_GPIO_Port->BSRR = ROW_2_Pin; 	// turn on row 2
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_3_GPIO_Port->IDR & COLUMN_3_Pin) {
-			key_pressed = 0x06; // if column 1 is still high -> column 1 + row 2 = key 4
+			key_pressed = 0x06; // if column 3 is still high -> column 3 + row 2 = key 6
 			break;
 		}
 
@@ -224,7 +224,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_3_GPIO_Port->BSRR = ROW_3_Pin; 	// turn on row 3
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_3_GPIO_Port->IDR & COLUMN_3_Pin) {
-			key_pressed = 0x09; // if column 1 is still high -> column 1 + row 3 = key 7
+			key_pressed = 0x09; // if column 3 is still high -> column 3 + row 3 = key 9
 			break;
 		}
 
@@ -232,7 +232,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BSRR = ROW_4_Pin; 	// turn on row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_3_GPIO_Port->IDR & COLUMN_3_Pin) {
-			key_pressed = 0x0F; // if column 1 is still high -> column 1 + row 4 = key *
+			key_pressed = 0x0F; // if column 3 is still high -> column 3 + row 4 = key #
 			break;
 		}
 		break;
@@ -244,7 +244,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BRR = ROW_4_Pin;  // turn off row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_4_GPIO_Port->IDR & COLUMN_4_Pin) {
-			key_pressed = 0x0A; // if column 1 is still high -> column 1 + row 1 = key 1
+			key_pressed = 0x0A; // if column 4 is still high -> column 4 + row 1 = key A
 			break;
 		}
 
@@ -252,7 +252,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_2_GPIO_Port->BSRR = ROW_2_Pin; 	// turn on row 2
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_4_GPIO_Port->IDR & COLUMN_4_Pin) {
-			key_pressed = 0x0B; // if column 1 is still high -> column 1 + row 2 = key 4
+			key_pressed = 0x0B; // if column 4 is still high -> column 4 + row 2 = key B
 			break;
 		}
 
@@ -260,7 +260,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_3_GPIO_Port->BSRR = ROW_3_Pin; 	// turn on row 3
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_4_GPIO_Port->IDR & COLUMN_4_Pin) {
-			key_pressed = 0x0C; // if column 1 is still high -> column 1 + row 3 = key 7
+			key_pressed = 0x0C; // if column 4 is still high -> column 4 + row 3 = key C
 			break;
 		}
 
@@ -268,7 +268,7 @@ uint8_t keypad_handler(uint16_t column_to_evaluate)
 		ROW_4_GPIO_Port->BSRR = ROW_4_Pin; 	// turn on row 4
 		HAL_Delay(2); // wait for voltage to establish
 		if (COLUMN_4_GPIO_Port->IDR & COLUMN_4_Pin) {
-			key_pressed = 0x0D; // if column 1 is still high -> column 1 + row 4 = key *
+			key_pressed = 0x0D; // if column 4 is still high -> column 4 + row 4 = key D
 			break;
 		}
 		break;
