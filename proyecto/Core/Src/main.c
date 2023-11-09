@@ -339,6 +339,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // while que indica el funcionamiento de el display con keypad
   while (1)
   {
 	  /*if (key_event != 0xFF) { // check if there is a event from the EXTi callback
