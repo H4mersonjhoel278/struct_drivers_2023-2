@@ -333,7 +333,7 @@ int main(void)
   ssd1306_Init();
   ssd1306_Fill(Black);
   ssd1306_SetCursor(20, 20);
-  ssd1306_WriteString("<3", Font_7x10, White);
+  ssd1306_WriteString("ingresar key", Font_7x10, White);
   ssd1306_UpdateScreen();
   /* USER CODE END 2 */
 
